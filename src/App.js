@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { UseAuth } from "./custom-hooks";
 
-function App() {
+import { Activities, LoginOrRegister, Routines, Nav, Me } from "./components";
+
+const App = () => {
+  const { isLoggedIn } = UseAuth();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Nav />
+      <Switch>
+        {isLoggedIn && (
+          <>
+            <Route exact path="/activities" component={Activities} />
+            <Route exact path="/routines" component={Routines} />
+            <Route exact path="/me" component={Me} />
+            {/* <Route path="/posts/new" component={NewPost} />
+            
+            <Route path="/posts/:postId/messages/new" component={Message} /> */}
+          </>
+        )}
+
+        {!isLoggedIn && (
+          <>
+            <Route exact path="/activities" component={Activities} />
+            <Route exact path="/routines" component={Routines} />
+            <Route exact path="/login" component={LoginOrRegister} />
+            <Route exact path="/register" component={LoginOrRegister} />
+          </>
+        )}
+      </Switch>
+    </Router>
   );
-}
+};
 
 export default App;
