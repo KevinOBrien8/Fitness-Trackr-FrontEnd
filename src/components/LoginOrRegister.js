@@ -31,21 +31,16 @@ export default function LoginOrRegister() {
           body: JSON.stringify(form),
         }
       );
-
-      const { user, message, token } = await response.json();
-
-      localStorage.st_token = token;
-      updateAuthStatus();
-      history.push("/activities");
-      window.alert(message);
-
-      //     window.alert("Unrecognized Username or Password");
-      //     throw new Error(
-      //       `error ${
-      //         loginOrRegister === "login" ? "logging in" : "registering"
-      //       } user`
-      //     );
-      //   }
+      console.log(response.status);
+      const me = await response.json();
+      if (response.status === 200) {
+        localStorage.st_token = me.token;
+        updateAuthStatus();
+        history.push("/myroutines");
+        window.alert(me.message);
+      } else {
+        window.alert("Unrecognized username/password");
+      }
     } catch (err) {
       console.error(err);
     }

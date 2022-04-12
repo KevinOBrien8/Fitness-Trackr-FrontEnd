@@ -6,13 +6,14 @@ const loggedInLinks = [
   { id: 1, to: "/home", name: "Home" },
   { id: 2, to: "/activities", name: "Activities" },
   { id: 3, to: "/routines", name: "All Routines" },
-  { id: 4, to: "/me", name: "My Profile" },
+  { id: 4, to: "/myroutines", name: "My Routines" },
 ];
 const loggedOutLinks = [
-  { id: 1, to: "/activities", name: "Activities" },
-  { id: 2, to: "/routines", name: "All Routines" },
-  { id: 3, to: "/login", name: "Login" },
-  { id: 4, to: "/register", name: "Register" },
+  { id: 1, to: "/home", name: "Home" },
+  { id: 2, to: "/activities", name: "Activities" },
+  { id: 3, to: "/routines", name: "All Routines" },
+  { id: 4, to: "/login", name: "Login" },
+  { id: 5, to: "/register", name: "Register" },
 ];
 
 export default function Nav() {

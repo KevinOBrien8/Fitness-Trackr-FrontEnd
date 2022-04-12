@@ -2,7 +2,14 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { UseAuth } from "./custom-hooks";
 
-import { Activities, LoginOrRegister, Routines, Nav, Me } from "./components";
+import {
+  Activities,
+  LoginOrRegister,
+  Routines,
+  Nav,
+  MyRoutines,
+  Home,
+} from "./components";
 
 const App = () => {
   const { isLoggedIn } = UseAuth();
@@ -12,9 +19,10 @@ const App = () => {
       <Switch>
         {isLoggedIn && (
           <>
+            <Route exact path="/home" component={Home} />
             <Route exact path="/activities" component={Activities} />
             <Route exact path="/routines" component={Routines} />
-            <Route exact path="/me" component={Me} />
+            <Route exact path="/myroutines" component={MyRoutines} />
             {/* <Route path="/posts/new" component={NewPost} />
             
             <Route path="/posts/:postId/messages/new" component={Message} /> */}
@@ -23,6 +31,7 @@ const App = () => {
 
         {!isLoggedIn && (
           <>
+            <Route exact path="/home" component={Home} />
             <Route exact path="/activities" component={Activities} />
             <Route exact path="/routines" component={Routines} />
             <Route exact path="/login" component={LoginOrRegister} />
