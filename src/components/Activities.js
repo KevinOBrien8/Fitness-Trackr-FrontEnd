@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 
+import { UseAuth } from "../custom-hooks";
+
 export default function Activities() {
+  const { isLoggedIn, token } = UseAuth();
   const [activities, setActivities] = useState([]);
+  const [form, setForm] = useState({
+    name: "",
+    description: "",
+  });
 
   useEffect(() => {
     async function fetchActivities() {
@@ -22,6 +29,29 @@ export default function Activities() {
 
     fetchActivities();
   }, []);
+
+  function handleChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/activities`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(form),
+      });
+      const newRoutine = await response.json();
+      console.log(newRoutine);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   // eslint-disable-next-line
   //   useEffect(() => {
@@ -75,6 +105,38 @@ export default function Activities() {
             </div>
           );
         })}
+      {isLoggedIn && (
+        <aside>
+          <form className="newActivityForm" onSubmit={handleSubmit}>
+            <h3>Create New Activity</h3>
+            <div className="activityName">
+              <label>Name:</label>
+              <input
+                className="input"
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="activityDescription">
+              <label>Description:</label>
+              <input
+                className="input"
+                type="text"
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+              />
+            </div>
+            <input
+              className="submitBtn"
+              type="submit"
+              value="Submit New Activity"
+            />
+          </form>
+        </aside>
+      )}
     </div>
   );
 }

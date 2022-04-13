@@ -9,6 +9,7 @@ import {
   Nav,
   MyRoutines,
   Home,
+  AddActivity,
 } from "./components";
 
 const App = () => {
@@ -23,6 +24,11 @@ const App = () => {
             <Route exact path="/activities" component={Activities} />
             <Route exact path="/routines" component={Routines} />
             <Route exact path="/myroutines" component={MyRoutines} />
+            <Route
+              exact
+              path="/routines/:routineId/activities"
+              component={AddActivity}
+            />
             {/* <Route path="/posts/new" component={NewPost} />
             
             <Route path="/posts/:postId/messages/new" component={Message} /> */}

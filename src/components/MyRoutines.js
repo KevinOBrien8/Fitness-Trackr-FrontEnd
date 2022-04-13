@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { UseAuth } from "../custom-hooks";
+import { Link } from "react-router-dom";
 
 export default function MyRoutines() {
   const { token } = UseAuth();
@@ -45,6 +46,7 @@ export default function MyRoutines() {
           }
         );
         const myRoutines = await response.json();
+        console.log(myRoutines);
         setUserRoutines(myRoutines);
       } catch (err) {
         console.error(err);
@@ -52,6 +54,39 @@ export default function MyRoutines() {
     }
     fetchMyRoutines();
   }, [me]);
+
+  async function deleteRoutine({ id }) {
+    try {
+      const response = await fetch(`http://localhost:3000/api/routines/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.status);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function deleteRoutineActivity(id) {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/routine_activities/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(await response.json());
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   function handleChange(e) {
     if (e.target.type === "checkbox") {
@@ -91,10 +126,20 @@ export default function MyRoutines() {
             <div className="userRoutine" key={id}>
               <h2>{name}</h2>
               <p>{goal}</p>
+              {
+                <Link
+                  className="addActivityLink"
+                  to={`/routines/${routine.id}/activities`}
+                >
+                  Add Activity
+                </Link>
+              }
+              <button onClick={async (e) => await deleteRoutine(routine)}>
+                Delete Routine
+              </button>
               {activities &&
                 activities.map((activity) => {
                   const { id, name, description, duration, count } = activity;
-
                   return (
                     <div className="activitiesOnUserRoutine" key={id}>
                       <h4>{name}</h4>
@@ -103,6 +148,13 @@ export default function MyRoutines() {
                       <span>{duration}</span>
                       <label>Count:</label>
                       <span>{count}</span>
+                      <button
+                        onClick={async (e) =>
+                          await deleteRoutineActivity(routine.id)
+                        }
+                      >
+                        Remove Activity
+                      </button>
                     </div>
                   );
                 })}
@@ -110,7 +162,7 @@ export default function MyRoutines() {
           );
         })}
       <aside>
-        <form className="newPostForm" onSubmit={handleSubmit}>
+        <form className="newRoutineForm" onSubmit={handleSubmit}>
           <h3>Create New Routine</h3>
           <div className="routineName">
             <label>Name:</label>
