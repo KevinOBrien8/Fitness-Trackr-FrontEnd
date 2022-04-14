@@ -46,9 +46,19 @@ export default function Activities() {
         },
         body: JSON.stringify(form),
       });
-      const newRoutine = await response.json();
-      console.log(newRoutine);
+      const newActivity = await response.json();
+
+      if (newActivity.message) {
+        window.alert(newActivity.message);
+        return;
+      }
+      setActivities([...activities, newActivity]);
+      setForm({
+        name: "",
+        description: "",
+      });
     } catch (err) {
+      window.alert(err);
       console.error(err);
     }
   }

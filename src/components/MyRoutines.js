@@ -64,7 +64,11 @@ export default function MyRoutines() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.status);
+      const deletedRoutine = await response.json();
+
+      setUserRoutines(
+        userRoutines.filter((routine) => +routine.id !== +deletedRoutine.id)
+      );
     } catch (err) {
       console.error(err);
     }
@@ -82,7 +86,23 @@ export default function MyRoutines() {
           },
         }
       );
-      console.log(await response.json());
+
+      const deletedRoutineActivity = await response.json();
+
+      setUserRoutines(
+        userRoutines.map((routine) => {
+          if (routine.id !== deletedRoutineActivity.routineId) {
+            return routine;
+          }
+
+          routine.activities = routine.activities.filter(
+            (activity) =>
+              +activity.routineActivityId !== +deletedRoutineActivity.id
+          );
+
+          return routine;
+        })
+      );
     } catch (err) {
       console.error(err);
     }
@@ -109,7 +129,12 @@ export default function MyRoutines() {
         body: JSON.stringify(form),
       });
       const newRoutine = await response.json();
-      console.log(newRoutine);
+      setUserRoutines([...userRoutines, newRoutine]);
+      setForm({
+        name: "",
+        goal: "",
+        isPublic: false,
+      });
     } catch (err) {
       console.error(err);
     }
@@ -139,9 +164,10 @@ export default function MyRoutines() {
               </button>
               {activities &&
                 activities.map((activity) => {
-                  const { id, name, description, duration, count } = activity;
+                  const { activityId, name, description, duration, count } =
+                    activity;
                   return (
-                    <div className="activitiesOnUserRoutine" key={id}>
+                    <div className="activitiesOnUserRoutine" key={activityId}>
                       <h4>{name}</h4>
                       <p>{description}</p>
                       <label>Duration:</label>
@@ -150,7 +176,9 @@ export default function MyRoutines() {
                       <span>{count}</span>
                       <button
                         onClick={async (e) =>
-                          await deleteRoutineActivity(routine.id)
+                          await deleteRoutineActivity(
+                            activity.routineActivityId
+                          )
                         }
                       >
                         Remove Activity
