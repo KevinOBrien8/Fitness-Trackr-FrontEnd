@@ -5,3 +5,6 @@ export { default as Routines } from "./Routines";
 export { default as MyRoutines } from "./MyRoutines";
 export { default as Home } from "./Home";
 export { default as AddActivity } from "./AddActivity";
+export { default as EditActivity } from "./EditActivity";
+export { default as EditRoutine } from "./EditRoutine";
+export { default as ModifyRA } from "./ModifyRA";

@@ -10,6 +10,9 @@ import {
   MyRoutines,
   Home,
   AddActivity,
+  EditActivity,
+  EditRoutine,
+  ModifyRA,
 } from "./components";
 
 const App = () => {
@@ -28,6 +31,17 @@ const App = () => {
               exact
               path="/routines/:routineId/activities"
               component={AddActivity}
+            />
+            <Route exact path="/routines/:routineId" component={EditRoutine} />
+            <Route
+              exact
+              path="/activities/:activityId"
+              component={EditActivity}
+            />
+            <Route
+              exact
+              path="/routine_activities/:activityId"
+              component={ModifyRA}
             />
             {/* <Route path="/posts/new" component={NewPost} />
             

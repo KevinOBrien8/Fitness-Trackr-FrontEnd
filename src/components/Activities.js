@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import { UseAuth } from "../custom-hooks";
 
@@ -112,6 +113,14 @@ export default function Activities() {
             <div className="individualActivity" key={id}>
               <h3>{name}</h3>
               <p>{description}</p>
+              {isLoggedIn && (
+                <Link
+                  className="editActivityLink"
+                  to={`/activities/${activity.id}`}
+                >
+                  Edit Activity
+                </Link>
+              )}
             </div>
           );
         })}

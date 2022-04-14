@@ -46,7 +46,7 @@ export default function MyRoutines() {
           }
         );
         const myRoutines = await response.json();
-        console.log(myRoutines);
+
         setUserRoutines(myRoutines);
       } catch (err) {
         console.error(err);
@@ -153,6 +153,14 @@ export default function MyRoutines() {
               <p>{goal}</p>
               {
                 <Link
+                  className="editRoutineLink"
+                  to={`/routines/${routine.id}`}
+                >
+                  Edit Routine
+                </Link>
+              }
+              {
+                <Link
                   className="addActivityLink"
                   to={`/routines/${routine.id}/activities`}
                 >
@@ -174,6 +182,14 @@ export default function MyRoutines() {
                       <span>{duration}</span>
                       <label>Count:</label>
                       <span>{count}</span>
+                      {
+                        <Link
+                          className="modifyActivityLink"
+                          to={`/routine_activities/${activity.routineActivityId}`}
+                        >
+                          Modify Activity
+                        </Link>
+                      }
                       <button
                         onClick={async (e) =>
                           await deleteRoutineActivity(
