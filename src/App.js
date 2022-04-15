@@ -43,9 +43,6 @@ const App = () => {
               path="/routine_activities/:activityId"
               component={ModifyRA}
             />
-            {/* <Route path="/posts/new" component={NewPost} />
-            
-            <Route path="/posts/:postId/messages/new" component={Message} /> */}
           </>
         )}
 
