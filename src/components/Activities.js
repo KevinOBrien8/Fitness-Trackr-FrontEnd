@@ -3,6 +3,18 @@ import { Link } from "react-router-dom";
 
 import { UseAuth } from "../custom-hooks";
 
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  TextField,
+} from "@mui/material";
+
 export default function Activities() {
   const { isLoggedIn, token } = UseAuth();
   const [activities, setActivities] = useState([]);
@@ -64,98 +76,88 @@ export default function Activities() {
     }
   }
 
-  // eslint-disable-next-line
-  //   useEffect(() => {
-  //     setPosts(posts.filter((post) => containsSearchTerm(post, searchTerm)));
-  //   }, [searchTerm]);
-
-  // this validator returns true if searchTerm is found in field
-  //   function containsSearchTerm(post, searchTerm) {
-  //     for (let key in post) {
-  //       switch (key) {
-  //         case "willDeliver":
-  //         case "active":
-  //         case "_id":
-  //         case "author":
-  //         case "__v":
-  //         case "isAuthor":
-  //           continue;
-  //       }
-
-  //       const currentField = post[key];
-
-  //       if (currentField.indexOf(searchTerm) >= 0) {
-  //         return true;
-  //       }
-  //     }
-  //     return false;
-  //   }
-
   return (
-    <div className="activities">
-      <h1>Public Activities</h1>
-      {/* <form>
-        <label>Search:</label>
-        <input
-          type="text"
-          className="searchBar"
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-          }}
-        ></input>
-      </form> */}
-      {activities &&
-        activities.map((activity) => {
-          const { id, name, description } = activity;
+    <Container>
+      <Typography variant="h2" align="center" marginTop="40px">
+        Public Activities
+      </Typography>
+      <Container sx={{ py: 8 }} maxWidth="md">
+        <Grid container spacing={4}>
+          {activities &&
+            activities.map((activity) => {
+              const { id, name, description } = activity;
 
-          return (
-            <div className="individualActivity" key={id}>
-              <h3>{name}</h3>
-              <p>{description}</p>
-              {isLoggedIn && (
-                <Link
-                  className="editActivityLink"
-                  to={`/activities/${activity.id}`}
-                >
-                  Edit Activity
-                </Link>
-              )}
-            </div>
-          );
-        })}
-      {isLoggedIn && (
-        <aside>
-          <form className="newActivityForm" onSubmit={handleSubmit}>
-            <h3>Create New Activity</h3>
-            <div className="activityName">
-              <label>Name:</label>
-              <input
-                className="input"
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="activityDescription">
-              <label>Description:</label>
-              <input
-                className="input"
-                type="text"
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-              />
-            </div>
-            <input
-              className="submitBtn"
-              type="submit"
-              value="Submit New Activity"
-            />
-          </form>
-        </aside>
-      )}
-    </div>
+              return (
+                <Grid item key={id} xs={12} sm={6} md={4}>
+                  <Card
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {name}
+                      </Typography>
+                      <Typography>{description}</Typography>
+                    </CardContent>
+                    <CardActions>
+                      {isLoggedIn && (
+                        <Link
+                          className="editActivityLink"
+                          to={`/activities/${activity.id}`}
+                        >
+                          Edit Activity
+                        </Link>
+                      )}
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
+        </Grid>
+
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          component="form"
+          onSubmit={handleSubmit}
+        >
+          <Typography component="h1" variant="h5">
+            Create New Activity
+          </Typography>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="name"
+            label="Activity"
+            type="text"
+            id="name"
+            value={form.name}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="description"
+            label="Description"
+            type="text"
+            id="description"
+            value={form.description}
+            onChange={handleChange}
+          />
+          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+            Submit New Activity
+          </Button>
+        </Box>
+      </Container>
+    </Container>
   );
 }

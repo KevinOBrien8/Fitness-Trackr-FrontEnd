@@ -2,6 +2,16 @@ import React, { useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { UseAuth } from "../custom-hooks";
 
+import {
+  Button,
+  CssBaseline,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from "@mui/material";
+
 export default function LoginOrRegister() {
   const { updateAuthStatus } = UseAuth();
   const { pathname } = useLocation();
@@ -19,7 +29,7 @@ export default function LoginOrRegister() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
+    console.log(form);
     try {
       const response = await fetch(
         `http://localhost:3000/api/users/${loginOrRegister}`,
@@ -47,35 +57,54 @@ export default function LoginOrRegister() {
   }
 
   return (
-    <form className="loginForm" onSubmit={handleSubmit}>
-      <h1>
-        {loginOrRegister === "register" ? "Register New User" : "Welcome Back"}
-      </h1>
-      <div className="userName">
-        <label>{loginOrRegister === "register" && "Choose "}Username:</label>
-        <input
-          className="input"
-          type="text"
-          name="username"
-          value={form.username}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="password">
-        <label>{loginOrRegister === "register" && "Choose "}Password:</label>
-        <input
-          className="input"
-          type="password"
-          name="password"
-          value={form.password}
-          onChange={handleChange}
-        />
-      </div>
-      <input
-        className="loginBtn"
-        type="submit"
-        value={loginOrRegister === "register" ? "Sign Up" : "Login"}
-      />
-    </form>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          {loginOrRegister === "register"
+            ? "Register New User"
+            : "Welcome Back"}
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="username"
+            label="Username"
+            type="text"
+            id="username"
+            value={form.username}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            value={form.password}
+            onChange={handleChange}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            {loginOrRegister === "register" ? "Sign Up" : "Login"}
+          </Button>
+        </Box>
+      </Box>
+    </Container>
   );
 }

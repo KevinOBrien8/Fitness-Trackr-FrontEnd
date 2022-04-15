@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { UseAuth } from "../custom-hooks";
 import { Link } from "react-router-dom";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CssBaseline,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Checkbox,
+  TextField,
+  FormControlLabel,
+} from "@mui/material";
 
 export default function MyRoutines() {
   const { token } = UseAuth();
@@ -141,110 +155,204 @@ export default function MyRoutines() {
   }
 
   return (
-    <div>
-      Hi {me.username}
-      {userRoutines &&
-        userRoutines.map((routine) => {
-          const { id, name, goal, activities } = routine;
+    <Container>
+      <CssBaseline />
+      <Typography variant="h3" color="inherit" align="center" noWrap>
+        Hi {me.username}
+      </Typography>
+      <Container maxWidth="sm">
+        <Typography
+          component="h1"
+          variant="h4"
+          marginTop="40px"
+          align="center"
+          color="text.primary"
+          gutterBottom
+        >
+          Routines
+        </Typography>
+      </Container>
+      <Container sx={{ py: 8 }} maxWidth="md">
+        <Grid container spacing={4}>
+          {userRoutines &&
+            userRoutines.map((routine) => {
+              const { id, name, goal, activities } = routine;
 
-          return (
-            <div className="userRoutine" key={id}>
-              <h2>{name}</h2>
-              <p>{goal}</p>
-              {
-                <Link
-                  className="editRoutineLink"
-                  to={`/routines/${routine.id}`}
-                >
-                  Edit Routine
-                </Link>
-              }
-              {
-                <Link
-                  className="addActivityLink"
-                  to={`/routines/${routine.id}/activities`}
-                >
-                  Add Activity
-                </Link>
-              }
-              <button onClick={async (e) => await deleteRoutine(routine)}>
-                Delete Routine
-              </button>
-              {activities &&
-                activities.map((activity) => {
-                  const { activityId, name, description, duration, count } =
-                    activity;
-                  return (
-                    <div className="activitiesOnUserRoutine" key={activityId}>
-                      <h4>{name}</h4>
-                      <p>{description}</p>
-                      <label>Duration:</label>
-                      <span>{duration}</span>
-                      <label>Count:</label>
-                      <span>{count}</span>
-                      {
-                        <Link
-                          className="modifyActivityLink"
-                          to={`/routine_activities/${activity.routineActivityId}`}
-                        >
-                          Modify Activity
-                        </Link>
-                      }
-                      <button
-                        onClick={async (e) =>
-                          await deleteRoutineActivity(
-                            activity.routineActivityId
-                          )
-                        }
+              return (
+                <Grid item key={id} xs={12} sm={6} md={4}>
+                  <Card
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {name}
+                      </Typography>
+                      <Typography>{goal}</Typography>
+                      <Grid>
+                        {activities &&
+                          activities.map((activity) => {
+                            const {
+                              activityId,
+                              name,
+                              description,
+                              duration,
+                              count,
+                            } = activity;
+                            return (
+                              <Grid>
+                                <Typography key={activityId}>{name}</Typography>
+                                <Typography>{description}</Typography>
+                                <Typography>Count: {count}</Typography>
+                                <Typography>Duration: {duration}</Typography>
+                                {
+                                  <Link
+                                    className="modifyActivityLink"
+                                    to={`/routine_activities/${activity.routineActivityId}`}
+                                  >
+                                    Modify Activity
+                                  </Link>
+                                }
+                                <Button
+                                  size="small"
+                                  variant="contained"
+                                  color="secondary"
+                                  sx={{ mt: 3, mb: 2 }}
+                                  onClick={async (e) =>
+                                    await deleteRoutineActivity(
+                                      activity.routineActivityId
+                                    )
+                                  }
+                                >
+                                  Remove Activity
+                                </Button>
+                              </Grid>
+                            );
+                          })}
+                      </Grid>
+                    </CardContent>
+                    <CardActions>
+                      <Link
+                        className="editRoutineLink"
+                        to={`/routines/${routine.id}`}
                       >
-                        Remove Activity
-                      </button>
-                    </div>
-                  );
-                })}
-            </div>
-          );
-        })}
-      <aside>
-        <form className="newRoutineForm" onSubmit={handleSubmit}>
-          <h3>Create New Routine</h3>
-          <div className="routineName">
-            <label>Name:</label>
-            <input
-              className="input"
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="goal">
-            <label>Goal:</label>
-            <input
-              className="input"
-              type="text"
-              name="goal"
-              value={form.goal}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="isPublic">
-            <label>Make this public?</label>
-            <input
-              className="publicCheckbox"
-              type="checkbox"
-              name="isPublic"
-              checked={form.isPublic}
-              onChange={handleChange}
-            />
-          </div>
-          <input
-            className="submitBtn"
-            type="submit"
-            value="Submit New Routine"
+                        Edit Routine
+                      </Link>
+                      <Link
+                        size="small"
+                        className="addActivityLink"
+                        to={`/routines/${routine.id}/activities`}
+                      >
+                        Add Activity
+                      </Link>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="secondary"
+                        sx={{ mt: 3, mb: 2 }}
+                        onClick={async (e) => await deleteRoutine(routine)}
+                      >
+                        Delete Routine
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
+        </Grid>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          component="form"
+          onSubmit={handleSubmit}
+        >
+          <Typography component="h1" variant="h5">
+            Create New Routine
+          </Typography>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="name"
+            label="Routine Name"
+            type="text"
+            id="name"
+            value={form.name}
+            onChange={handleChange}
           />
-        </form>
-      </aside>
-    </div>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="goal"
+            label="Goal"
+            type="text"
+            id="goal"
+            value={form.goal}
+            onChange={handleChange}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="isPublic"
+                checked={form.isPublic}
+                onChange={handleChange}
+              />
+            }
+            label="Make this Public"
+          />
+
+          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+            Submit New Routine
+          </Button>
+        </Box>
+      </Container>
+    </Container>
   );
 }
+// {/* <aside>
+//         <form className="newRoutineForm" onSubmit={handleSubmit}>
+//           <h3>Create New Routine</h3>
+//           <div className="routineName">
+//             <label>Name:</label>
+//             <input
+//               className="input"
+//               type="text"
+//               name="name"
+//               value={form.name}
+//               onChange={handleChange}
+//             />
+//           </div>
+//           <div className="goal">
+//             <label>Goal:</label>
+//             <input
+//               className="input"
+//               type="text"
+//               name="goal"
+//               value={form.goal}
+//               onChange={handleChange}
+//             />
+//           </div>
+//           <div className="isPublic">
+//             <label>Make this public?</label>
+//             <input
+//               className="publicCheckbox"
+//               type="checkbox"
+//               name="isPublic"
+//               checked={form.isPublic}
+//               onChange={handleChange}
+//             />
+//       //     </div>  <input
+//       //       className="submitBtn"
+//       //       type="submit"
+//       //       value="Submit New Routine"
+//       //     />
+//       //   </form>
+//       // </aside>
