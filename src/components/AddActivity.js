@@ -3,7 +3,16 @@ import { useParams } from "react-router-dom";
 import { UseAuth } from "../custom-hooks";
 import { useHistory } from "react-router-dom";
 
-// import{Box, TextField, Menu} from "@mui/material"
+import {
+  Box,
+  TextField,
+  Menu,
+  CssBaseline,
+  Container,
+  Typography,
+  Button,
+  MenuItem,
+} from "@mui/material";
 
 export default function AddActivity() {
   const { routineId } = useParams();
@@ -14,14 +23,14 @@ export default function AddActivity() {
     duration: "",
   });
 
-  //   const [anchorEl, setAnchorEl] = React.useState(null);
-  // const open = Boolean(anchorEl);
-  // const handleClick = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const [activityList, setActivityList] = useState([]);
 
@@ -79,7 +88,65 @@ export default function AddActivity() {
   console.log(form);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Add Activity To Routine
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit}>
+          <label htmlFor="select-activity">Activity </label>
+          <select name="activity" id="select-activity" onChange={handleChange}>
+            <option>Choose An Activity</option>
+            {activityList.map(({ name, id }) => {
+              return <option key={id}>{name}</option>;
+            })}
+          </select>
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="count"
+            label="Count"
+            type="text"
+            id="count"
+            value={form.count}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="duration"
+            label="Duration"
+            type="text"
+            id="duration"
+            value={form.duration}
+            onChange={handleChange}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Add Activity
+          </Button>
+        </Box>
+      </Box>
+    </Container>
+  );
+}
+{
+  /* <form onSubmit={handleSubmit}>
       <label htmlFor="select-activity">Activity </label>
       <select name="activity" id="select-activity" onChange={handleChange}>
         <option>Choose An Activity</option>
@@ -106,6 +173,5 @@ export default function AddActivity() {
       <button id="submitActivity" onClick={handleSubmit}>
         Submit Activity
       </button>
-    </form>
-  );
+    </form> */
 }

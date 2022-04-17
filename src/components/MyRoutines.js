@@ -204,7 +204,9 @@ export default function MyRoutines() {
                             } = activity;
                             return (
                               <Grid>
-                                <Typography key={activityId}>{name}</Typography>
+                                <Typography key={activityId} fontWeight="bold">
+                                  {name}
+                                </Typography>
                                 <Typography>{description}</Typography>
                                 <Typography>Count: {count}</Typography>
                                 <Typography>Duration: {duration}</Typography>

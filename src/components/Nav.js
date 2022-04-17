@@ -24,14 +24,14 @@ export default function Nav() {
   return (
     <>
       <CssBaseline />
-      <AppBar position="relative">
+      <AppBar position="relative" sx={{ height: "40px" }}>
         <nav>
           {navLinks.map(({ id, to, name }) => (
             <NavLink key={id} to={to} className="navLink">
               {name}
             </NavLink>
           ))}
-          {isLoggedIn && <Logout onClick={logout} />}
+          {isLoggedIn && <Logout className="logout" onClick={logout} />}
         </nav>
       </AppBar>
     </>
